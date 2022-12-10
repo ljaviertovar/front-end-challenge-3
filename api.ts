@@ -12,6 +12,17 @@ const api = {
 		set: (notes: Note[]) => {
 			localStorage.setItem("notes", JSON.stringify(notes))
 		},
+		delete: (id: string) => {
+			try {
+				const notes = JSON.parse(localStorage.getItem("notes") || "[]")
+				const updatetdNotes = notes.filter((n: Note) => n.id !== id)
+				localStorage.setItem("notes", JSON.stringify(updatetdNotes))
+
+				return updatetdNotes
+			} catch (error) {
+				console.log(error)
+			}
+		},
 	},
 }
 
