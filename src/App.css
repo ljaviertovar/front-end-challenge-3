@@ -9,7 +9,19 @@ body {
   gap: 1rem;
 }
 
-.notes__add button {
+.notes__mainActions {
+  display: flex;
+  align-items: baseline;
+  align-content: center;
+  flex-wrap: wrap;
+}
+
+.notes__mainActions .nes-select {
+  width: auto;
+}
+
+.notes__mainActions .nes-select,
+.notes__mainActions button {
   margin-bottom: 2rem;
 }
 
@@ -44,4 +56,9 @@ body {
   display: flex;
   justify-content: flex-end;
   margin: 1rem 0;
+}
+
+.categories-selected {
+  display: flex;
+  gap: 0.5rem;
 }

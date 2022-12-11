@@ -1,21 +1,23 @@
 import { v4 as uuid } from "uuid"
 
-import { Note } from "./interfaces"
+import { Note, NoteCategories } from "./interfaces"
 
 const api = {
 	notes: {
-		list: (): Note[] => {
+		list: (category: NoteCategories): Note[] => {
 			try {
 				const notes = JSON.parse(localStorage.getItem("notes") || "[]")
-				return notes.filter((n: Note) => !n.archived)
+				if (category === "All Categories") return notes.filter((n: Note) => !n.archived)
+				return notes.filter((n: Note) => !n.archived && n.category === category)
 			} catch (error) {
 				return []
 			}
 		},
-		listArchived: (): Note[] => {
+		listArchived: (category: NoteCategories): Note[] => {
 			try {
 				const notes = JSON.parse(localStorage.getItem("notes") || "[]")
-				return notes.filter((n: Note) => n.archived)
+				if (category === "All Categories") return notes.filter((n: Note) => n.archived)
+				return notes.filter((n: Note) => n.archived && n.category === category)
 			} catch (error) {
 				return []
 			}

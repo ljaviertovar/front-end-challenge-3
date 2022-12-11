@@ -4,6 +4,7 @@ import type { PayloadAction } from "@reduxjs/toolkit"
 import api from "../../api"
 
 import { Note } from "../../interfaces"
+import { NoteCategories } from "../../interfaces/notes-interface"
 
 interface NoteState {
 	value: Note[]
@@ -17,11 +18,11 @@ export const noteSlice = createSlice({
 	name: "note-slice",
 	initialState,
 	reducers: {
-		getNotes: state => {
-			state.value = api.notes.list()
+		getNotes: (state, action: PayloadAction<NoteCategories>) => {
+			state.value = api.notes.list(action.payload)
 		},
-		getNotesArchived: state => {
-			state.value = api.notes.listArchived()
+		getNotesArchived: (state, action: PayloadAction<NoteCategories>) => {
+			state.value = api.notes.listArchived(action.payload)
 		},
 		addNote: (state, action: PayloadAction<Note>) => {
 			const newNote = api.notes.add(action.payload)
