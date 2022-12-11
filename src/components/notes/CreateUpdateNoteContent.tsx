@@ -5,18 +5,23 @@ import { Note } from "../../../interfaces"
 
 import { addNote, setShowModal, updateNote } from "../../../store/features"
 import { RooState } from "../../../store/store"
+import { NoteCategogry } from "../../../interfaces/notes-interface"
 
 interface Props {
 	note?: Note
 }
 
-const INITIAL_NOTE = {
+const INITIAL_NOTE: Partial<Note> = {
 	title: "",
 	content: "",
+	category: "Unclassified",
 }
+
+const CATEGORIES: NoteCategogry[] = ["Unclassified", "Develop", "Planning", "Idea"]
 
 const createUpdateNoteContent = ({ note }: Props) => {
 	const [newUpdateNote, setNewUpdateNote] = useState<Note>(INITIAL_NOTE as Note)
+	const [typeCategory, setTypeCategory] = useState<NoteCategogry>(note ? note.category : CATEGORIES[0])
 
 	const showModal = useSelector((state: RooState) => state.modals.showModal)
 	const dispatch = useDispatch()
@@ -29,7 +34,15 @@ const createUpdateNoteContent = ({ note }: Props) => {
 		setNewUpdateNote({ ...newUpdateNote, [e.currentTarget.name]: e.currentTarget.value })
 	}
 
-	const saveNote = () => {
+	const handleCategory = (e: React.FormEvent<HTMLSelectElement>) => {
+		const category: NoteCategogry = e.currentTarget.value as NoteCategogry
+		setTypeCategory(category)
+		setNewUpdateNote({ ...newUpdateNote, category })
+	}
+
+	const saveNote = (e: React.SyntheticEvent) => {
+		e.preventDefault()
+
 		if (!newUpdateNote?.title && !newUpdateNote?.content) return null
 
 		if (note?.id) dispatch(updateNote(newUpdateNote as Note))
@@ -39,7 +52,7 @@ const createUpdateNoteContent = ({ note }: Props) => {
 	}
 
 	return (
-		<>
+		<form onSubmit={saveNote}>
 			<h2>Create / Edit Note</h2>
 			<div className='nes-field'>
 				<label htmlFor='name_field'>Title</label>
@@ -60,6 +73,17 @@ const createUpdateNoteContent = ({ note }: Props) => {
 				value={newUpdateNote.content}
 				onChange={handleChange}
 			/>
+			<label htmlFor='default_select'>Category</label>
+			<div className='nes-select'>
+				<select required id='default_select' onChange={handleCategory}>
+					<option value={typeCategory} disabled selected hidden>
+						{typeCategory}
+					</option>
+					{CATEGORIES.map((category: NoteCategogry) => (
+						<option value={category}>{category}</option>
+					))}
+				</select>
+			</div>
 			<div className='modal__btns'>
 				<button
 					type='button'
@@ -70,11 +94,11 @@ const createUpdateNoteContent = ({ note }: Props) => {
 				>
 					Cancel
 				</button>
-				<button type='button' className='nes-btn is-primary' onClick={() => saveNote()}>
+				<button type='submit' className='nes-btn is-primary'>
 					{note?.id ? "update" : "Save"}
 				</button>
 			</div>
-		</>
+		</form>
 	)
 }
 

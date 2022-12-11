@@ -1,4 +1,5 @@
 import { useDispatch } from "react-redux"
+import { NoteCategogry } from "../../../interfaces"
 import {
 	archivedNote,
 	getNotes,
@@ -13,7 +14,7 @@ interface Note {
 	lastEdited: string
 	archived: boolean
 	content: string
-	// categories: string[]
+	category: NoteCategogry
 }
 
 interface Props {
