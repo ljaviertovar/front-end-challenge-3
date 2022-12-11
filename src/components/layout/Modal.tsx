@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react"
+import { ReactNode } from "react"
 import { createPortal } from "react-dom"
 import { useSelector } from "react-redux"
 import { RooState } from "../../../store/store"
@@ -8,7 +8,7 @@ interface Props {
 }
 
 const Modal = ({ children }: Props) => {
-	const showModal = useSelector((state: RooState) => state.notes.showModal)
+	const showModal = useSelector((state: RooState) => state.modals.showModal)
 
 	if (!showModal) return null
 

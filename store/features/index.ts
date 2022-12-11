@@ -1,5 +1,7 @@
-import { getNotes, addNote, deleteNote, setShowModal, setContentModal } from "./note-slice"
+import { getNotes, addNote, updateNote, deleteNote, archivedNote, getNotesArchived } from "./note-slice"
+import { setShowModal, setContentModal } from "./modal-slice"
 
 export { default as noteReducer } from "./note-slice"
+export { default as modalReducer } from "./modal-slice"
 
-export { getNotes, addNote, deleteNote, setShowModal, setContentModal }
+export { getNotes, addNote, updateNote, deleteNote, setShowModal, setContentModal, archivedNote, getNotesArchived }

@@ -1,8 +1,5 @@
-import { useState } from "react"
 import { useDispatch } from "react-redux"
-import { CreateUpdateNoteContent } from "."
-import { deleteNote, setContentModal, setShowModal } from "../../../store/features"
-import { Modal } from "../layout"
+import { archivedNote, setContentModal, setShowModal } from "../../../store/features"
 interface Note {
 	id: string
 	title: string
@@ -14,52 +11,51 @@ interface Note {
 
 interface Props {
 	note: Note
+	archiveList: boolean
 }
 
-type ContentModal = React.ReactNode | React.ReactNode[] | null
-
-const NoteCard = ({ note }: Props) => {
+const NoteCard = ({ note, archiveList }: Props) => {
 	const dispatch = useDispatch()
 
 	const handleDelete = (id: string, title: string) => {
 		dispatch(
-			setContentModal(
-				<>
-					<p>Are you sure you want to delete this note?</p>
-					<span className='nes-text is-primary'>{title}</span>
-					<div className='modal__btns' style={{ fontSize: "12px" }}>
-						<button type='button' className='nes-btn' onClick={() => dispatch(setShowModal(false))}>
-							Cancel
-						</button>
-						<button type='button' className='nes-btn is-error' onClick={() => dispatch(deleteNote(id))}>
-							Delete
-						</button>
-					</div>
-				</>
-			)
+			setContentModal({
+				type: "delete",
+				content: note,
+			})
 		)
 		dispatch(setShowModal(true))
 	}
 
-	const handleUpdate = (note: Note) => {
-		setContentModal(<CreateUpdateNoteContent note={note} />)
+	const handleUpdate = () => {
+		dispatch(
+			setContentModal({
+				type: "update",
+				content: note,
+			})
+		)
+		dispatch(setShowModal(true))
+	}
+
+	const handleArchive = () => {
+		dispatch(archivedNote(note.id))
 	}
 
 	return (
 		<>
 			<div className='nes-container is-dark'>
 				<div>
-					<h3>{note.title}</h3>
-					<p>Last edited: {note.lastEdited}</p>
+					<h3 className='nes-text is-primary'>{note.title}</h3>
+					<p style={{ fontSize: "12px" }}>Last edited: {note.lastEdited}</p>
 				</div>
 				<div className='notes__btns'>
 					<button type='button' className='nes-btn is-error' onClick={() => handleDelete(note.id, note.title)}>
 						Delete
 					</button>
-					<button type='button' className='nes-btn is-warning'>
+					<button type='button' className='nes-btn is-warning' onClick={() => handleArchive()}>
 						Archive
 					</button>
-					<button type='button' className='nes-btn is-success' onClick={() => handleUpdate(note)}>
+					<button type='button' className='nes-btn is-success' onClick={() => handleUpdate()}>
 						Edit
 					</button>
 				</div>

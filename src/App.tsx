@@ -6,11 +6,16 @@ import NoteCard from "./components/notes/NoteCard"
 import "./App.css"
 import { RooState } from "../store/store"
 import { Modal } from "./components/layout"
-import { getNotes, setContentModal, setShowModal } from "../store/features"
-import { CreateUpdateNoteContent, NoNotes } from "./components/notes"
+import { getNotes, getNotesArchived, setContentModal, setShowModal } from "../store/features"
+import { NoNotes } from "./components/notes"
+import ContentModal from "./components/notes/ContentModal"
+import { Note } from "../interfaces/notes-interface"
 
 function App() {
+	const [archiveList, setArchiveList] = useState(false)
+
 	const notes = useSelector((state: RooState) => state.notes)
+	const modals = useSelector((state: RooState) => state.modals)
 	const dispatch = useDispatch()
 
 	useEffect(() => {
@@ -18,8 +23,19 @@ function App() {
 	}, [])
 
 	const handleAdd = () => {
-		dispatch(setContentModal(<CreateUpdateNoteContent />))
-		dispatch(setShowModal(!notes.showModal))
+		dispatch(
+			setContentModal({
+				type: "add",
+			})
+		)
+		dispatch(setShowModal(!modals.showModal))
+	}
+
+	const handleArchived = () => {
+		if (archiveList) dispatch(getNotesArchived())
+		else dispatch(getNotes())
+
+		setArchiveList(!archiveList)
 	}
 
 	return (
@@ -30,6 +46,9 @@ function App() {
 					<button type='button' className='nes-btn is-primary' onClick={() => handleAdd()}>
 						Add note
 					</button>
+					<button type='button' className='nes-btn' onClick={() => handleArchived()}>
+						{archiveList ? "See Notes" : "See Archived"}
+					</button>
 				</section>
 				<section className='notes__grid'>
 					{!notes.value.length ? (
@@ -37,13 +56,15 @@ function App() {
 					) : (
 						<>
 							{notes.value.map(note => (
-								<NoteCard key={note.id} note={note} />
+								<NoteCard key={note.id} note={note} archiveList={archiveList} />
 							))}
 						</>
 					)}
 				</section>
 			</main>
-			<Modal>{notes.contentModal}</Modal>
+			<Modal>
+				<ContentModal />
+			</Modal>
 		</>
 	)
 }

@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit"
 import type { PayloadAction } from "@reduxjs/toolkit"
-import { v4 as uuid } from "uuid"
 
 import api from "../../api"
 
@@ -8,48 +7,55 @@ import { Note } from "../../interfaces"
 
 interface NoteState {
 	value: Note[]
-	showModal: boolean
-	contentModal: React.ReactNode | React.ReactNode[] | null
 }
 
 const initialState: NoteState = {
 	value: [],
-	showModal: false,
-	contentModal: null,
 }
 
 export const noteSlice = createSlice({
-	name: "notes",
+	name: "note-slice",
 	initialState,
 	reducers: {
 		getNotes: state => {
 			state.value = api.notes.list()
 		},
+		getNotesArchived: state => {
+			state.value = api.notes.listArchived()
+		},
 		addNote: (state, action: PayloadAction<Note>) => {
-			const today = new Date()
-			const newNote = {
-				...action.payload,
-				id: uuid(),
-				lastEdited: `${today.getDay()}/${today.getMonth()}/${today.getFullYear()}`,
+			const newNote = api.notes.add(action.payload)
+			state.value.push(newNote as Note)
+		},
+		updateNote: (state, action: PayloadAction<Note>) => {
+			const updatedNote = api.notes.update(action.payload) as Note
+			if (updatedNote.id) {
+				state.value = state.value.map((note: Note) => {
+					if (note.id === updatedNote.id) {
+						return updatedNote
+					}
+					return note
+				})
 			}
-
-			localStorage.setItem("notes", JSON.stringify([...state.value, newNote]))
-
-			state.value.push(newNote)
 		},
 		deleteNote: (state, action: PayloadAction<string>) => {
-			const notes = api.notes.delete(action.payload)
-			state.value = notes
+			const noteDeleted = api.notes.delete(action.payload)
+			state.value = state.value.filter((note: Note) => note.id !== noteDeleted)
 		},
-		setShowModal: (state, action: PayloadAction<boolean>) => {
-			state.showModal = action.payload
-		},
-		setContentModal: (state, action: PayloadAction<React.ReactNode | React.ReactNode[] | null>) => {
-			state.contentModal = action.payload
+		archivedNote: (state, action: PayloadAction<string>) => {
+			const updatedNote = api.notes.archive(action.payload) as Note
+			if (updatedNote.id) {
+				state.value = state.value.map((note: Note) => {
+					if (note.id === updatedNote.id) {
+						return updatedNote
+					}
+					return note
+				})
+			}
 		},
 	},
 })
 
-export const { getNotes, addNote, deleteNote, setShowModal, setContentModal } = noteSlice.actions
+export const { getNotes, addNote, updateNote, deleteNote, archivedNote, getNotesArchived } = noteSlice.actions
 
 export default noteSlice.reducer
