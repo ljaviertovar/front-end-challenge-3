@@ -88,14 +88,19 @@ function App() {
 					) : (
 						<>
 							{notes.value.map(note => (
-								<NoteCard key={note.id} note={note} archiveList={archiveList} />
+								<NoteCard
+									key={note.id}
+									note={note}
+									archiveList={archiveList}
+									category={typeCategory as NoteCategories}
+								/>
 							))}
 						</>
 					)}
 				</section>
 			</main>
 			<Modal>
-				<ContentModal />
+				<ContentModal archiveList={archiveList} category={typeCategory as NoteCategories} />
 			</Modal>
 		</>
 	)

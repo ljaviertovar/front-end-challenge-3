@@ -1,5 +1,6 @@
 import { useDispatch } from "react-redux"
 import { NoteCategogry } from "../../../interfaces"
+import { NoteCategories } from "../../../interfaces/notes-interface"
 import {
 	archivedNote,
 	getNotes,
@@ -20,9 +21,10 @@ interface Note {
 interface Props {
 	note: Note
 	archiveList: boolean
+	category: NoteCategories
 }
 
-const NoteCard = ({ note, archiveList }: Props) => {
+const NoteCard = ({ note, archiveList, category }: Props) => {
 	const dispatch = useDispatch()
 
 	const handleDelete = (id: string, title: string) => {
@@ -47,12 +49,12 @@ const NoteCard = ({ note, archiveList }: Props) => {
 
 	const handleArchive = () => {
 		dispatch(archivedNote(note.id))
-		dispatch(getNotes())
+		dispatch(getNotes(category))
 	}
 
 	const handleUnarchive = () => {
 		dispatch(unarchivedNote(note.id))
-		dispatch(getNotesArchived())
+		dispatch(getNotesArchived(category))
 	}
 
 	return (

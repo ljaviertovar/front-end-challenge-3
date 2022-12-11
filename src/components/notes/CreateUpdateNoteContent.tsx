@@ -3,12 +3,14 @@ import { useDispatch, useSelector } from "react-redux"
 
 import { Note } from "../../../interfaces"
 
-import { addNote, setShowModal, updateNote } from "../../../store/features"
+import { addNote, getNotes, getNotesArchived, setShowModal, updateNote } from "../../../store/features"
 import { RooState } from "../../../store/store"
-import { NoteCategogry } from "../../../interfaces/notes-interface"
+import { NoteCategogry, NoteCategories } from "../../../interfaces/notes-interface"
 
 interface Props {
 	note?: Note
+	archiveList: boolean
+	category: NoteCategories
 }
 
 const INITIAL_NOTE: Partial<Note> = {
@@ -19,7 +21,7 @@ const INITIAL_NOTE: Partial<Note> = {
 
 const CATEGORIES: NoteCategogry[] = ["Unclassified", "Develop", "Planning", "Idea"]
 
-const createUpdateNoteContent = ({ note }: Props) => {
+const createUpdateNoteContent = ({ note, archiveList, category }: Props) => {
 	const [newUpdateNote, setNewUpdateNote] = useState<Note>(INITIAL_NOTE as Note)
 	const [typeCategory, setTypeCategory] = useState<NoteCategogry>(note ? note.category : CATEGORIES[0])
 
@@ -47,6 +49,11 @@ const createUpdateNoteContent = ({ note }: Props) => {
 
 		if (note?.id) dispatch(updateNote(newUpdateNote as Note))
 		else dispatch(addNote(newUpdateNote as Note))
+
+		console.log({ category })
+
+		if (archiveList) dispatch(getNotesArchived(category))
+		else dispatch(getNotes(category))
 
 		dispatch(setShowModal(false))
 	}
