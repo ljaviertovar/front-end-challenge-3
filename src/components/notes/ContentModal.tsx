@@ -1,8 +1,10 @@
 import { useSelector } from "react-redux"
-import { CreateUpdateNoteContent } from "."
-import { NoteCategories } from "../../../interfaces"
+import { CreateUpdateNoteContent, DeleteNote } from "."
+
 import { RooState } from "../../../store/store"
-import DeleteNote from "./DeleteNote"
+
+import { NoteCategories } from "../../../interfaces"
+
 interface Props {
 	archiveList: boolean
 	category: NoteCategories

@@ -1,12 +1,10 @@
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 
-import { Note } from "../../../interfaces"
-
-import { addNote, getNotes, getNotesArchived, setShowModal, updateNote } from "../../../store/features"
 import { RooState } from "../../../store/store"
-import { NoteCategogry, NoteCategories } from "../../../interfaces/notes-interface"
+import { addNote, getNotes, getNotesArchived, setShowModal, updateNote } from "../../../store/features"
 
+import { NoteCategogry, NoteCategories, Note } from "../../../interfaces/notes-interface"
 interface Props {
 	note?: Note
 	archiveList: boolean

@@ -1,5 +1,5 @@
-import React from "react"
 import { useDispatch } from "react-redux"
+
 import { deleteNote, setShowModal } from "../../../store/features"
 
 interface Props {

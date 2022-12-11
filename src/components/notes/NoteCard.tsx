@@ -1,6 +1,5 @@
 import { useDispatch } from "react-redux"
-import { NoteCategogry } from "../../../interfaces"
-import { NoteCategories } from "../../../interfaces/notes-interface"
+import { NoteCategogry, NoteCategories } from "../../../interfaces"
 import {
 	archivedNote,
 	getNotes,

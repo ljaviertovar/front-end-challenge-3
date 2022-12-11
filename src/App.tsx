@@ -1,17 +1,17 @@
 import { useEffect, useState } from "react"
 import { useSelector, useDispatch } from "react-redux"
 
-import NoteCard from "./components/notes/NoteCard"
-
-import "./App.css"
-import { RooState } from "../store/store"
 import { Modal } from "./components/layout"
+import { NoNotes, NoteCard, ContentModal } from "./components/notes"
+
+import { RooState } from "../store/store"
 import { getNotes, getNotesArchived, setContentModal, setShowModal } from "../store/features"
-import { NoNotes } from "./components/notes"
-import ContentModal from "./components/notes/ContentModal"
+
 import { NoteCategories } from "../interfaces"
 
 const CATEGORIES: NoteCategories[] = ["All Categories", "Develop", "Planning", "Idea", "Unclassified"]
+
+import "./App.css"
 
 function App() {
 	const [archiveList, setArchiveList] = useState(false)
