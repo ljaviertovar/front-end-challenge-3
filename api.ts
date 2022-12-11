@@ -100,6 +100,28 @@ const api = {
 				console.log(error)
 			}
 		},
+		unarchive: (id: string) => {
+			try {
+				const notes: Note[] = JSON.parse(localStorage.getItem("notes") || "[]")
+				const today = new Date()
+				const lastEdited = `${today.getDay()}/${today.getMonth()}/${today.getFullYear()} - ${today.getHours()}:${today.getMinutes()}:${today.getUTCSeconds()}`
+
+				let updatedNote = {}
+				const updatetdNotes = notes.map(oldNote => {
+					if (oldNote.id === id) {
+						updatedNote = { ...oldNote, archived: false, lastEdited }
+						return updatedNote
+					}
+					return oldNote
+				})
+
+				localStorage.setItem("notes", JSON.stringify(updatetdNotes))
+
+				return updatedNote
+			} catch (error) {
+				console.log(error)
+			}
+		},
 	},
 }
 

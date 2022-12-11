@@ -53,9 +53,21 @@ export const noteSlice = createSlice({
 				})
 			}
 		},
+		unarchivedNote: (state, action: PayloadAction<string>) => {
+			const updatedNote = api.notes.unarchive(action.payload) as Note
+			if (updatedNote.id) {
+				state.value = state.value.map((note: Note) => {
+					if (note.id === updatedNote.id) {
+						return updatedNote
+					}
+					return note
+				})
+			}
+		},
 	},
 })
 
-export const { getNotes, addNote, updateNote, deleteNote, archivedNote, getNotesArchived } = noteSlice.actions
+export const { getNotes, addNote, updateNote, deleteNote, archivedNote, getNotesArchived, unarchivedNote } =
+	noteSlice.actions
 
 export default noteSlice.reducer

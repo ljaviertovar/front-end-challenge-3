@@ -1,5 +1,12 @@
 import { useDispatch } from "react-redux"
-import { archivedNote, setContentModal, setShowModal } from "../../../store/features"
+import {
+	archivedNote,
+	getNotes,
+	getNotesArchived,
+	setContentModal,
+	setShowModal,
+	unarchivedNote,
+} from "../../../store/features"
 interface Note {
 	id: string
 	title: string
@@ -39,6 +46,12 @@ const NoteCard = ({ note, archiveList }: Props) => {
 
 	const handleArchive = () => {
 		dispatch(archivedNote(note.id))
+		dispatch(getNotes())
+	}
+
+	const handleUnarchive = () => {
+		dispatch(unarchivedNote(note.id))
+		dispatch(getNotesArchived())
 	}
 
 	return (
@@ -49,15 +62,28 @@ const NoteCard = ({ note, archiveList }: Props) => {
 					<p style={{ fontSize: "12px" }}>Last edited: {note.lastEdited}</p>
 				</div>
 				<div className='notes__btns'>
-					<button type='button' className='nes-btn is-error' onClick={() => handleDelete(note.id, note.title)}>
-						Delete
-					</button>
-					<button type='button' className='nes-btn is-warning' onClick={() => handleArchive()}>
-						Archive
-					</button>
-					<button type='button' className='nes-btn is-success' onClick={() => handleUpdate()}>
-						Edit
-					</button>
+					{archiveList ? (
+						<>
+							<button type='button' className='nes-btn is-error' onClick={() => handleDelete(note.id, note.title)}>
+								Delete
+							</button>
+							<button type='button' className='nes-btn is-warning' onClick={() => handleUnarchive()}>
+								Unarchive
+							</button>
+						</>
+					) : (
+						<>
+							<button type='button' className='nes-btn is-error' onClick={() => handleDelete(note.id, note.title)}>
+								Delete
+							</button>
+							<button type='button' className='nes-btn is-warning' onClick={() => handleArchive()}>
+								Archive
+							</button>
+							<button type='button' className='nes-btn is-success' onClick={() => handleUpdate()}>
+								Edit
+							</button>
+						</>
+					)}
 				</div>
 			</div>
 		</>

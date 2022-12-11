@@ -1,7 +1,11 @@
-const NoNotes = () => {
+interface Props {
+	archiveList: boolean
+}
+
+const NoNotes = ({ archiveList }: Props) => {
 	return (
 		<div className='nes-container is-rounded'>
-			<p>No notes added yet. Add one!</p>
+			{archiveList ? <p>No notes archived.</p> : <p>No notes added yet. Add one!</p>}
 		</div>
 	)
 }

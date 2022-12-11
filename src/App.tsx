@@ -31,11 +31,14 @@ function App() {
 		dispatch(setShowModal(!modals.showModal))
 	}
 
-	const handleArchived = () => {
-		if (archiveList) dispatch(getNotesArchived())
-		else dispatch(getNotes())
+	const handleList = () => {
+		dispatch(getNotes())
+		setArchiveList(false)
+	}
 
-		setArchiveList(!archiveList)
+	const handleArchivedList = () => {
+		dispatch(getNotesArchived())
+		setArchiveList(true)
 	}
 
 	return (
@@ -46,13 +49,19 @@ function App() {
 					<button type='button' className='nes-btn is-primary' onClick={() => handleAdd()}>
 						Add note
 					</button>
-					<button type='button' className='nes-btn' onClick={() => handleArchived()}>
-						{archiveList ? "See Notes" : "See Archived"}
-					</button>
+					{archiveList ? (
+						<button type='button' className='nes-btn' onClick={() => handleList()}>
+							See Notes
+						</button>
+					) : (
+						<button type='button' className='nes-btn' onClick={() => handleArchivedList()}>
+							See Archived
+						</button>
+					)}
 				</section>
 				<section className='notes__grid'>
 					{!notes.value.length ? (
-						<NoNotes />
+						<NoNotes archiveList={archiveList} />
 					) : (
 						<>
 							{notes.value.map(note => (
