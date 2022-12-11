@@ -23,6 +23,6 @@ pnpm run dev
 
 [🚀 See the demo here.](https://front-end-challenge-2-8kgh.vercel.app/)
 
-![image](https://user-images.githubusercontent.com/34925280/206923761-c0c2d07e-271a-43b0-baad-7e11967875e6.png)
-![image](https://user-images.githubusercontent.com/34925280/206923738-9532e323-36ee-47e4-b941-a85093a4783d.png)
+![image](https://user-images.githubusercontent.com/34925280/206924126-98094e1d-cf37-4d5c-8204-cfda0e9a3898.png)
+![image](https://user-images.githubusercontent.com/34925280/206924142-aad5cc06-ae50-4110-adee-33ef41a67771.png)
 
