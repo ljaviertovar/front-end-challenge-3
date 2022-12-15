@@ -34,6 +34,7 @@ body {
   display: flex;
   gap: 1rem;
   justify-content: flex-end;
+  flex-wrap: wrap;
 }
 
 .overlay {
@@ -66,4 +67,14 @@ body {
 .categories-selected {
   display: flex;
   gap: 0.5rem;
+}
+
+@media (max-width: 640px) {
+  body {
+    padding: 1rem;
+  }
+
+  .nes-container {
+    padding: 1rem !important;
+  }
 }
